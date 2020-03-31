@@ -37,7 +37,7 @@ var $banner = (function(){
             ul.style.top = 0;
         }
     }
-    function shows() {
+    function shows(conf) {
         var times = setInterval(show, 10);
         //li添加鼠标移入移出事件
         var slide = document.getElementsByClassName("slide");
@@ -85,7 +85,7 @@ var $banner = (function(){
             }
         }
         //页面打开时自动滚动切换
-        timer = setInterval(next, 2000);
+        timer = setInterval(next, conf.timer);
     }
     function animate(obj, json, callback) {
         clearInterval(obj.timer);

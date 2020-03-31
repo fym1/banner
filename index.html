@@ -11,10 +11,12 @@
 		</div>
 	</body>
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="./logout.js"></script>
+    <script src="./layout.js"></script>
     <script>
-		$(function(){
-			$banner.shows()
+		$(function(conf){
+			$banner.shows({
+				timer:2000
+			})
 		})
     </script>
 </html>
