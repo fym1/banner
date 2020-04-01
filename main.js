@@ -19,38 +19,39 @@ var $banner = (function(){
     +'</ul>'
     var elem = $('#box'),
         $dlg = $(html),
-        $left,
-        $right,
+        $span = $dlg.find('span'),
+        left,
+        right,
         timer,
         $oNavlist = $dlg.find('li'),
         index = 1,//打开页面生效的图片的下标为1
         isMoving = false;
     function shows() {
-        $left = $dlg.find('#left');
-        $right = $dlg.find('#right');
         elem.append($dlg);
+        left = document.getElementById('left');
+        right = document.getElementById('right');
         $('li')[0].className = 'active';
         //轮播
-        elem.onmouseover = function () {
-            animate($left, {
+        elem.mouseover(function () {
+            animate(left, {
                 opacity: 0.6
             })
-            animate($right, {
+            animate(right, {
                 opacity: 0.6
             })
             clearInterval(timer); //图片停止滚动
-        }
-        elem.onmouseout = function () {
-            animate($left, {
+        })
+        elem.mouseout(function () {
+            animate(left, {
                 opacity: 0
             })
-            animate($right, {
+            animate(right, {
                 opacity: 0
             })
             timer = setInterval(next, 3000); //图片开始接着滚动
-        }
-        $right.onclick = next;
-        $left.onclick = prev;
+        })
+        right.onclick = next;
+		left.onclick = prev;
         //按钮点击切换事件
         for (var i = 0; i < $oNavlist.length; i++) {
             $oNavlist[i].index = i;
