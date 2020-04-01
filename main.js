@@ -19,11 +19,10 @@ var $banner = (function(){
     +'</ul>'
     var elem = $('#box'),
         $dlg = $(html),
-        $span = $dlg.find('span'),
         left,
         right,
         timer,
-        $oNavlist = $dlg.find('li'),
+        $li = $dlg.find('li'),
         index = 1,//打开页面生效的图片的下标为1
         isMoving = false;
     function shows(confg) {
@@ -33,19 +32,19 @@ var $banner = (function(){
         $('li')[0].className = 'active';
         //轮播
         elem.mouseover(function () {
-            animate(left, {
+            rotation(left, {
                 opacity: 0.6
             })
-            animate(right, {
+            rotation(right, {
                 opacity: 0.6
             })
             clearInterval(timer); //图片停止滚动
         })
         elem.mouseout(function () {
-            animate(left, {
+            rotation(left, {
                 opacity: 0
             })
-            animate(right, {
+            rotation(right, {
                 opacity: 0
             })
             timer = setInterval(next, confg.times); //图片开始接着滚动
@@ -53,12 +52,12 @@ var $banner = (function(){
         right.onclick = next;
 		left.onclick = prev;
         //按钮点击切换事件
-        for (var i = 0; i < $oNavlist.length; i++) {
-            $oNavlist[i].index = i;
-            $oNavlist[i].onclick = function () {
+        for (var i = 0; i < $li.length; i++) {
+            $li[i].index = i;
+            $li[i].onclick = function () {
                 index = this.index + 1;
-                navmove();
-                animate(slider, {
+                move();
+                rotation(slider, {
                     left: -1200 * index
                 });
             }
@@ -66,17 +65,17 @@ var $banner = (function(){
         //页面打开时自动滚动切换
         timer = setInterval(next,2000);
     }
-    function animate(obj, json, callback) {
+    function rotation(obj, json, callback) {
         clearInterval(obj.timer);
         obj.timer = setInterval(function () {
             var flag = true;
             for (var attr in json) {
                 (function (attr) {
                     if (attr == "opacity") {
-                        var now = parseInt(getStyle(obj, attr) * 100);
+                        var now = parseInt(getCSS(obj, attr) * 100);
                         var dest = json[attr] * 100;
                     } else {
-                        var now = parseInt(getStyle(obj, attr));
+                        var now = parseInt(getCSS(obj, attr));
                         var dest = json[attr];
                     }
                     var speed = (dest - now) / 5;
@@ -97,7 +96,7 @@ var $banner = (function(){
             }
         }, 30);
     }
-    function getStyle(obj, attr) { //返回值带有单位px
+    function getCSS(obj, attr) { //返回值带有单位px
         if (obj.currentStyle) {
             return obj.currentStyle[attr];
         } else {
@@ -110,8 +109,8 @@ var $banner = (function(){
         }
         isMoving = true;
         index++;
-        navmove();
-        animate(slider, {
+        move();
+        rotation(slider, {
             left: -1200 * index
         }, function () {
             if (index == 6) {
@@ -128,8 +127,8 @@ var $banner = (function(){
         }
         isMoving = true;
         index--;
-        navmove();
-        animate(slider, {
+        move();
+        rotation(slider, {
             left: -1200 * index
         }, function () {
             if (index == 0) {
@@ -140,17 +139,17 @@ var $banner = (function(){
         });
     }
     //图片切换时按钮样式跟着切换
-    function navmove() {
-        for (var i = 0; i < $oNavlist.length; i++) {
-            $oNavlist[i].className = "";
+    function move() {
+        for (var i = 0; i < $li.length; i++) {
+            $li[i].className = "";
         }
         console.log(index)
         if (index > 5) {
-            $oNavlist[0].className = "active";
+            $li[0].className = "active";
         } else if (index <= 0) {
-            $oNavlist[4].className = "active";
+            $li[4].className = "active";
         } else {
-            $oNavlist[index - 1].className = "active";
+            $li[index - 1].className = "active";
         }
     }
     return{
