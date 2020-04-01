@@ -17,66 +17,44 @@ var $banner = (function(){
         +'<li>4</li>'
         +'<li>5</li>'
     +'</ul>'
-    var elem = $('#box');
-    elem.append(html);
-    document.getElementsByTagName('li')[0].className = 'active'
-    var box = document.getElementById('box');
-    var slider = document.getElementById('slider');
-    var left = document.getElementById('left');
-    var right = document.getElementById('right');
-    var oNavlist = document.getElementById('navs').children;
-    var index = 1; //打开页面生效的图片的下标为1
-    var timer;
-    var isMoving = false;
-    function show(){
-        var ul = document.getElementById("navs");
-            top = ul.offsetTop - 1;
-        ul.style.top = top + "px";
-        //走完一半再返回
-        if (-1 * ul.offsetTop >= ul.offsetHeight-30) {
-            ul.style.top = 0;
-        }
-    }
-    function shows(conf) {
-        var times = setInterval(show, 10);
-        //li添加鼠标移入移出事件
-        var slide = document.getElementsByClassName("slide");
-        for (var i = 0; i < slide.length; i++) {
-            //移出事件
-            slide[i].onmouseout = function () {
-                //不能加 var
-                times = setInterval(show, 10);
-            };
-            //移入事件
-            slide[i].onmouseover = function () {
-                clearInterval(times);
-            };
-        }
+    var elem = $('#box'),
+        $dlg = $(html),
+        $left,
+        $right,
+        timer,
+        $oNavlist = $dlg.find('li'),
+        index = 1,//打开页面生效的图片的下标为1
+        isMoving = false;
+    function shows() {
+        $left = $dlg.find('#left');
+        $right = $dlg.find('#right');
+        elem.append($dlg);
+        $('li')[0].className = 'active';
         //轮播
-        box.onmouseover = function () {
-            animate(left, {
+        elem.onmouseover = function () {
+            animate($left, {
                 opacity: 0.6
             })
-            animate(right, {
+            animate($right, {
                 opacity: 0.6
             })
             clearInterval(timer); //图片停止滚动
         }
-        box.onmouseout = function () {
-            animate(left, {
+        elem.onmouseout = function () {
+            animate($left, {
                 opacity: 0
             })
-            animate(right, {
+            animate($right, {
                 opacity: 0
             })
             timer = setInterval(next, 3000); //图片开始接着滚动
         }
-        right.onclick = next;
-        left.onclick = prev;
+        $right.onclick = next;
+        $left.onclick = prev;
         //按钮点击切换事件
-        for (var i = 0; i < oNavlist.length; i++) {
-            oNavlist[i].index = i;
-            oNavlist[i].onclick = function () {
+        for (var i = 0; i < $oNavlist.length; i++) {
+            $oNavlist[i].index = i;
+            $oNavlist[i].onclick = function () {
                 index = this.index + 1;
                 navmove();
                 animate(slider, {
@@ -85,7 +63,7 @@ var $banner = (function(){
             }
         }
         //页面打开时自动滚动切换
-        timer = setInterval(next, conf.timer);
+        timer = setInterval(next,2000);
     }
     function animate(obj, json, callback) {
         clearInterval(obj.timer);
@@ -162,16 +140,16 @@ var $banner = (function(){
     }
     //图片切换时按钮样式跟着切换
     function navmove() {
-        for (var i = 0; i < oNavlist.length; i++) {
-            oNavlist[i].className = "";
+        for (var i = 0; i < $oNavlist.length; i++) {
+            $oNavlist[i].className = "";
         }
         console.log(index)
         if (index > 5) {
-            oNavlist[0].className = "active";
+            $oNavlist[0].className = "active";
         } else if (index <= 0) {
-            oNavlist[4].className = "active";
+            $oNavlist[4].className = "active";
         } else {
-            oNavlist[index - 1].className = "active";
+            $oNavlist[index - 1].className = "active";
         }
     }
     return{
