@@ -26,7 +26,7 @@ var $banner = (function(){
         $oNavlist = $dlg.find('li'),
         index = 1,//打开页面生效的图片的下标为1
         isMoving = false;
-    function shows() {
+    function shows(confg) {
         elem.append($dlg);
         left = document.getElementById('left');
         right = document.getElementById('right');
@@ -48,7 +48,7 @@ var $banner = (function(){
             animate(right, {
                 opacity: 0
             })
-            timer = setInterval(next, 3000); //图片开始接着滚动
+            timer = setInterval(next, confg.times); //图片开始接着滚动
         })
         right.onclick = next;
 		left.onclick = prev;
